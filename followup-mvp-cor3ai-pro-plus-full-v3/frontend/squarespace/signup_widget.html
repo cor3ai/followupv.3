@@ -1,0 +1,21 @@
+<!-- Squarespace: Code Block -->
+<form id="fu-widget" style="display:grid;gap:8px">
+  <input name="email" type="email" placeholder="you@company.com" required />
+  <select name="vertical">
+    <option>salon</option><option>dental</option><option>car_detail</option><option>car_repair</option>
+    <option>barber</option><option>home_services</option><option>hvac</option><option>plumbing</option><option>electrical</option>
+  </select>
+  <input name="token" placeholder="Invite token (if required)" />
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button type="submit">Email me a login link</button>
+    <button id="fu-pay" type="button">Pay now</button>
+  </div>
+</form>
+<div id="fu-status"></div>
+<script>
+async function fuPost(p,b){const r=await fetch(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});const t=await r.text();try{return{ok:r.ok,json:JSON.parse(t)}}catch{return{ok:r.ok,json:t}}}
+const f=document.getElementById('fu-widget'); const s=document.getElementById('fu-status'); const pay=document.getElementById('fu-pay');
+f.onsubmit=async(e)=>{e.preventDefault(); const d=Object.fromEntries(new FormData(f).entries()); const r=await fuPost('/api/auth/magic-link', d); s.innerText=r.ok?'Check your email for a login link.':'Error: '+(r.json?.error||r.json)};
+pay.onclick=async()=>{const d=Object.fromEntries(new FormData(f).entries()); if(!d.email){alert('Enter email');return} const r=await fuPost('/api/stripe/create-checkout',{email:d.email}); if(r.ok&&r.json.url) location=r.json.url; else s.innerText='Payment link error' }
+</script>
+

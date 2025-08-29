@@ -1,0 +1,1 @@
+export function createMimeMessage({to,from,subject,html}:{to:string,from:string,subject:string,html:string}){const b=[`To: ${to}`,`From: ${from}`,`Subject: ${subject}`,'MIME-Version: 1.0','Content-Type: text/html; charset=UTF-8','',html].join('\r\n'); return Buffer.from(b).toString('base64').replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}

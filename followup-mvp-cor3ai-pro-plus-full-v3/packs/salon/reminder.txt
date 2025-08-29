@@ -1,0 +1,1 @@
+Reminder style: short, confirm date/time, give reschedule link or ask to reply.

@@ -1,0 +1,57 @@
+services:
+  - type: web
+    name: followup-backend
+    env: node
+    plan: starter
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    repo: .
+    rootDir: backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: followup-db
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: SENDGRID_FROM_EMAIL
+        value: hello@cor3ai.com
+      - key: SENDGRID_FROM_NAME
+        value: FollowUp
+      - key: EMAIL_PROVIDER
+        value: sendgrid
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_ID
+        sync: false
+      - key: STRIPE_SUCCESS_URL
+        value: http://www.cor3ai.com/thanks?session_id={CHECKOUT_SESSION_ID}
+      - key: STRIPE_CANCEL_URL
+        value: http://www.cor3ai.com/cancel
+      - key: APP_URL
+        value: https://app.cor3ai.com
+      - key: NUDGE_API_KEY
+        sync: false
+      - key: REVENUE_API_KEY
+        sync: false
+      - key: ALLOW_SAMPLE_SEED
+        value: true
+databases:
+  - name: followup-db
+    plan: starter
+
+
+- key: REQUIRE_SIGNUP_TOKEN
+  value: false
+- key: ADMIN_API_KEY
+  sync: false
+- key: SENDGRID_WEBHOOK_PUBLIC_KEY
+  sync: false

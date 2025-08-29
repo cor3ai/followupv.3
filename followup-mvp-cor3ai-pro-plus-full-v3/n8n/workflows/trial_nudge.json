@@ -1,0 +1,61 @@
+{
+  "name": "FollowUp Trial Nudge (daily)",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 10,
+              "minute": 0
+            }
+          ]
+        }
+      },
+      "id": "cron",
+      "name": "Every day 10:00",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "{{ $json.FOLLOWUP_API_BASE }}/api/internal/trial-nudge",
+        "options": {},
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "jsonParameters": true
+      },
+      "id": "http",
+      "name": "Call trial-nudge",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        520,
+        300
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "followup-nudge-cred"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every day 10:00": {
+      "main": [
+        [
+          {
+            "node": "Call trial-nudge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Sign up — FollowUp</title><link rel="stylesheet" href="/app/styles.css"/></head>
+<body><header><h1>Sign up</h1></header>
+<main>
+  <form id="signupForm" class="card">
+    <label>Email<input name="email" type="email" required></label>
+    <label>Business Type<select name="vertical">
+      <option>salon</option><option>dental</option><option>car_detail</option><option>car_repair</option>
+      <option>barber</option><option>home_services</option><option>hvac</option><option>plumbing</option><option>electrical</option>
+    </select></label>
+    <label>Invite Token (if required)<input name="token" placeholder="e.g. BETA-ABC123"></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button type="submit">Email me a login link</button>
+      <button id="btnPay" type="button">Pay now (Stripe)</button>
+    </div>
+  </form>
+  <div id="status"></div>
+</main>
+<script>
+async function post(p,body){ const r=await fetch(p,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}); const t=await r.text(); try{return {ok:r.ok, json:JSON.parse(t)}}catch{return {ok:r.ok, json:t}}}
+document.getElementById('signupForm').onsubmit=async(e)=>{
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(e.target).entries());
+  const r=await post('/api/auth/magic-link', d);
+  document.getElementById('status').innerText = r.ok ? 'Check your email for a magic link.' : ('Error: '+ (r.json?.error||r.json));
+};
+document.getElementById('btnPay').onclick=async()=>{
+  const d=Object.fromEntries(new FormData(document.getElementById('signupForm')).entries());
+  if(!d.email){ alert('Enter your email first'); return }
+  const r=await post('/api/stripe/create-checkout',{email:d.email});
+  if(r.ok && r.json.url) window.location = r.json.url; else alert('Payment link error');
+};
+</script>
+</body></html>
+

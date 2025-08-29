@@ -1,0 +1,55 @@
+{
+  "name": "FollowUp Revenue Webhook \u2192 API",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "followup-revenue",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook /followup-revenue",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "url": "{{ $json.FOLLOWUP_API_BASE }}/api/internal/revenue",
+        "options": {},
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "jsonParameters": true
+      },
+      "id": "http",
+      "name": "POST to revenue",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 2,
+      "position": [
+        520,
+        520
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "followup-revenue-cred"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook /followup-revenue": {
+      "main": [
+        [
+          {
+            "node": "POST to revenue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

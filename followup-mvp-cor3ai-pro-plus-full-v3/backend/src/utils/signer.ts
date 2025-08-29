@@ -1,0 +1,1 @@
+import crypto from 'crypto'; export function sign(orgId:string,email:string){return crypto.createHmac('sha256',process.env.JWT_SECRET as string).update(`${orgId}|${email.toLowerCase()}`).digest('hex')} export function verify(orgId:string,email:string,sig:string){return sign(orgId,email)===sig}
