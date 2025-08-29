@@ -11,7 +11,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
-        generateValue: true
+        generateValue: 
       - key: DATABASE_URL
         fromDatabase:
           name: followup-db
@@ -27,7 +27,7 @@ services:
       - key: EMAIL_PROVIDER
         value: sendgrid
       - key: STRIPE_SECRET_KEY
-        sync: false
+        sync: sk_test_51S1BFlBhp5GIA7hbmt4LqKYbO0hbgfGE9YlvdtigWir6YjF6pdyXoeMWRxWs4aOoYVxpJfzpjK5L4zloqHmExba9006vaqoNHF
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
       - key: STRIPE_PRICE_ID
@@ -55,3 +55,4 @@ databases:
   sync: false
 - key: SENDGRID_WEBHOOK_PUBLIC_KEY
   sync: false
+
